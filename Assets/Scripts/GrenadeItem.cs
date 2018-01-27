@@ -2,39 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrenadeItem : MonoBehaviour, Item
+public class GrenadeItem : Item
 {
-    public float speed = 5f;
-    public float bullet_speed = 5f;
+    public float grenade_speed = 10f;
+    public GameObject _grenade;
 
     // Use this for initialization
     void Start()
     {
+        this.active = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    // Use item
+    override public void use(GameObject parent, Vector2 direction)
     {
-
-    }
-
-    // Return True if the item is an active item
-    public bool is_active()
-    {
-        return (true);
-    }
-
-    // Add capacities to the player
-    public void update_player(Player parent)
-    {
-
-    }
-
-    public void use(GameObject parent, Vector2 direction)
-    {
-        GameObject grenade = GameObject.Instantiate(gameObject, (Vector2)(parent.transform.position) + direction, parent.transform.rotation);
+        GameObject grenade = GameObject.Instantiate(_grenade, (Vector2)(parent.transform.position) + direction, parent.transform.rotation);
         grenade.GetComponent<Grenade>().configure(parent);
-        grenade.GetComponent<Rigidbody>().AddForce(direction * bullet_speed);
+        grenade.GetComponent<Rigidbody2D>().velocity = (direction * grenade_speed);
         Destroy(gameObject);
     }
 }

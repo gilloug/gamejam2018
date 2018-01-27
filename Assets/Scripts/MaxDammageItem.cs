@@ -11,13 +11,8 @@ public class MaxDammageItem : Item
 		this.active = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     // Add capacities to the player
-    public void update_player(Player parent)
+	public override void update_player(Player parent)
     {
         parent.damage_multiplicator.origin += to_add;
     }

@@ -12,6 +12,9 @@ public abstract class Item : MonoBehaviour
 		return active;
 	}
 
+	public virtual void Update() {
+	}
+
 	// Add capacities to the player
 	public virtual void update_player(Player parent){
 	}

@@ -11,11 +11,6 @@ public class MaxCooldownItem : Item
 		this.active = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
 	// Add capacities to the player
 	public override void update_player(Player parent)
     {

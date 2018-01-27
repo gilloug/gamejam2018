@@ -2,55 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : MonoBehaviour {
-    public float damage = 25f;
-    public bool destroy_on_contact = true;
-    private BoxCollider2D owner = null;
-    public float countdown = 3f;
-    GameObject parent = null;
-    public float bullet_speed = 10f;
+public class Grenade : MonoBehaviour
+{
+    private float countdown = 3f;
+    public int shrapnels = 30;
+    public GameObject bullet;
+    private GameObject owner = null;
+    public float speed = 35f;
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        countdown -= Time.deltaTime;
-        if (countdown <= 0)
-        {
-            for (float x = -1; x < 1; x += 0.1f)
-            {
-                for (float y = -1; y < 1; y += 0.1f)
-                {
-                    var direction = new Vector2(x, y);
-                    GameObject bullet = GameObject.Instantiate(gameObject, (Vector2)(transform.position) + direction, transform.rotation);
-                    Destroy(bullet, 1);
-                    bullet.GetComponent<InstanciableWeapon>().configure(parent);
-                    bullet.GetComponent<Rigidbody2D>().velocity = direction * bullet_speed;
-                }
-            }
-        }
-        Destroy(gameObject);
+    void Start()
+    {
     }
 
     public void configure(GameObject player)
     {
-        parent = player;
-        owner = player.GetComponent<BoxCollider2D>();
-        damage *= player.GetComponent<Player>().damage_multiplicator.current;
+        owner = player;
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
+    // Update is called once per frame
+    void Update()
     {
-        GameObject obj = coll.gameObject;
-        if (obj.layer == LayerMask.NameToLayer("Player"))
+        countdown -= Time.deltaTime;
+        if (countdown <= 0)
         {
-            obj.GetComponent<Player>().take_damage(damage);
-        }
-        if (destroy_on_contact)
-        {
+            for (int i = 0; i < shrapnels; i++)
+            {
+                Vector2 direction = (new Vector2(Random.Range(-100, 100), Random.Range(-100, 100))).normalized;
+                GameObject shrapnel = GameObject.Instantiate(bullet, (Vector2)transform.position + direction, transform.rotation);
+                shrapnel.GetComponent<InstanciableWeapon>().configure(owner);
+                shrapnel.GetComponent<Rigidbody2D>().velocity = (direction * speed);
+                Debug.Log(i);
+            }
             Destroy(gameObject);
         }
     }
