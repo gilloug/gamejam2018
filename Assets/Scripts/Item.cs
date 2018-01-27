@@ -2,9 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Item
+public abstract class Item : MonoBehaviour
 {
-    bool is_active();
-    void update_player(Player parent);
-    void use(GameObject parent, Vector2 direction);
+	// Childs must initialize this boolean
+	protected bool active;
+
+	// returns whether the item is active or not
+	public bool is_active(){
+		return active;
+	}
+
+	// Add capacities to the player
+	public virtual void update_player(Player parent){
+	}
+
+	// Use item
+	public virtual void use(GameObject parent, Vector2 direction){
+	}
 }

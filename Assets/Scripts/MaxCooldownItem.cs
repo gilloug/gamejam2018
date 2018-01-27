@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaxCooldownItem : MonoBehaviour, Item
+public class MaxCooldownItem : Item
 {
 	public float to_mul = 0.9f;
     // Use this for initialization
     void Start()
     {
+		this.active = false;
     }
 
     // Update is called once per frame
@@ -15,19 +16,9 @@ public class MaxCooldownItem : MonoBehaviour, Item
     {
     }
 
-    // Return True if the item is an active item
-    public bool is_active()
-    {
-        return (false);
-    }
-
-    // Add capacities to the player
-    public void update_player(Player parent)
+	// Add capacities to the player
+	public override void update_player(Player parent)
     {
 		parent.weapon_cooldown.origin = parent.weapon_cooldown.origin * to_mul;
-    }
-
-    public void use(GameObject parent, Vector2 direction)
-    {
     }
 }
