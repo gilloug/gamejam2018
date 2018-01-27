@@ -20,7 +20,7 @@ public class BulletWeapon : MonoBehaviour, Weapon {
 	public void use(GameObject parent, Vector2 direction) {
 		GameObject bullet = GameObject.Instantiate (bullet_prefab, (Vector2)(parent.transform.position) + direction, parent.transform.rotation);
 		Destroy (bullet, 5);
-		bullet.GetComponent<Bullet> ().set_owner (parent.GetComponent<BoxCollider2D>());
+		bullet.GetComponent<InstanciableWeapon> ().configure (parent);
 		bullet.GetComponent<Rigidbody2D>().velocity = direction * bullet_speed;
 	}
 	

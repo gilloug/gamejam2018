@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HighJumpItem : MonoBehaviour, Items
+public class MaxCooldownItem : MonoBehaviour, Item
 {
+	public float to_mul = 0.9f;
     // Use this for initialization
     void Start()
     {
@@ -23,13 +24,7 @@ public class HighJumpItem : MonoBehaviour, Items
     // Add capacities to the player
     public void update_player(Player parent)
     {
-        parent.jump_velocity += 2;
-    }
-
-    // Erase capacities from the player
-    public void on_drop(Player parent)
-    {
-        parent.jump_velocity -= 2;
+		parent.weapon_cooldown.origin = parent.weapon_cooldown.origin * to_mul;
     }
 
     public void use(GameObject parent, Vector2 direction)

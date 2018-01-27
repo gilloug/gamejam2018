@@ -27,7 +27,7 @@ public class BladeWeapon : MonoBehaviour, Weapon {
 		);
 		blade.transform.parent = parent.transform;
 		Destroy (blade, blade_duration);
-		blade.GetComponent<Blade> ().set_owner (coll);
+		blade.GetComponent<InstanciableWeapon> ().configure (parent);
 	}
 
 	// Update is called once per frame

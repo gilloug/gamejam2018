@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4943220864516228}
   - component: {fileID: 212362717139507876}
-  - component: {fileID: 114979120896908616}
   - component: {fileID: 61975385737079748}
+  - component: {fileID: 114117219762052010}
   m_Layer: 0
   m_Name: Blade
   m_TagString: Untagged
@@ -67,7 +67,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114979120896908616
+--- !u!114 &114117219762052010
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -75,10 +75,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1692083730038342}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f26a44b92cc2ec440a7b85266910d760, type: 3}
+  m_Script: {fileID: 11500000, guid: 4281e20c2e5ec664c9256131c6a18bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
+  destroy_on_contact: 0
 --- !u!212 &212362717139507876
 SpriteRenderer:
   m_ObjectHideFlags: 1
