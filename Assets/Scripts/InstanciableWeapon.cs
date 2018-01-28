@@ -33,6 +33,6 @@ public class InstanciableWeapon : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		
 	}
 }

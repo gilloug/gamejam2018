@@ -18,9 +18,6 @@ public class DontGoThroughThings : MonoBehaviour
 		Vector2 movementThisStep = (Vector2)myRigidbody.position - previousPosition;
 		RaycastHit2D hitInfo = Physics2D.Raycast(previousPosition, movementThisStep, movementThisStep.magnitude, layerMask.value);
 		if (hitInfo.collider) {
-			Debug.Log (previousPosition);
-			Debug.Log(hitInfo.point);
-			Debug.Log ("---------------");
 			myRigidbody.velocity = new Vector2 ();
 			myRigidbody.position = previousPosition;
 		} else {

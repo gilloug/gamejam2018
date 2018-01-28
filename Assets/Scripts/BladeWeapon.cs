@@ -23,7 +23,7 @@ public class BladeWeapon : MonoBehaviour, Weapon {
 		GameObject blade = GameObject.Instantiate (
 			blade_prefab,
 			(Vector2)(parent.transform.position) + Vector2.ClampMagnitude(direction, coll.bounds.size.x / 2),
-			Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg, Vector3.forward)
+			Quaternion.AngleAxis(Mathf.Atan2(direction.x, -direction.y) * Mathf.Rad2Deg, Vector3.forward)
 		);
 		blade.transform.parent = parent.transform;
 		Destroy (blade, blade_duration);

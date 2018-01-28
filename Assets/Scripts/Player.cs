@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GamepadInput;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -22,6 +23,9 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	//Menu
+	public GamePad.Index gpIndex = GamePad.Index.Any;
+
 	//Physics
 	private float jump_velocity = 20f;
 	private float move_velocity = 20f;
@@ -42,12 +46,16 @@ public class Player : MonoBehaviour {
 	private Weapon weapon_script;
 	private List<GameObject> active_items = new List<GameObject>();
 	private List<GameObject> passive_items = new List<GameObject>();
+    private bool facingLeft;
+    private Animator anim;
 
-	private bool disabled = false;
+    private bool disabled = false;
 
 	// Use this for initialization
 	void Start () {
-		body = GetComponent<Rigidbody2D> ();
+        facingLeft = false;
+        anim = GetComponent<Animator>();
+        body = GetComponent<Rigidbody2D> ();
 		coll = GetComponent<Collider2D>();
 		wall_layer = 1 << LayerMask.NameToLayer("Wall");
 		weapon_script = weapon.GetComponent<Weapon> ();
@@ -59,9 +67,9 @@ public class Player : MonoBehaviour {
 		if (Physics2D.Raycast (new Vector2 (coll.bounds.center.x, coll.bounds.min.y), Vector2.down, 0.1f, wall_layer).collider) {
 			jump_count.to_origin();
 		}
-		float x_speed = body.velocity.x + Input.GetAxis ("Horizontal") * move_velocity * Time.deltaTime;
+		float x_speed = body.velocity.x + GamePad.GetAxis(GamePad.Axis.LeftStick, gpIndex).x * move_velocity * Time.deltaTime;
 		float y_speed = body.velocity.y;
-		if (jump_count.current > 0 && Input.GetKeyDown("joystick button 5"))
+		if (jump_count.current > 0 && GamePad.GetButtonDown(GamePad.Button.RightShoulder, gpIndex))
 		{
 			jump_count.current--;
 			y_speed = jump_velocity;
@@ -72,7 +80,7 @@ public class Player : MonoBehaviour {
 	void update_fire() {
 		if (disabled)
 			return;
-		Vector2 fire_direction = new Vector2 (Input.GetAxis ("R-Horizontal"), -Input.GetAxis ("R-Vertical"));
+		Vector2 fire_direction = GamePad.GetAxis(GamePad.Axis.RightStick, gpIndex);
 		if (weapon_cooldown.current > 0) {
 			weapon_cooldown.current -= Time.deltaTime;
 		} else if (fire_direction.magnitude > 0.01) {
@@ -82,9 +90,9 @@ public class Player : MonoBehaviour {
 	}
 
 	void update_active_item() {
-		if (disabled || !Input.GetKeyDown("joystick button 4") || active_items.Count < 1)
+		if (disabled || !GamePad.GetButtonDown(GamePad.Button.LeftShoulder, gpIndex) || active_items.Count < 1)
 			return;
-		Vector2 fire_direction = new Vector2 (Input.GetAxis ("R-Horizontal"), -Input.GetAxis ("R-Vertical"));
+		Vector2 fire_direction = GamePad.GetAxis(GamePad.Axis.RightStick, gpIndex);
 		active_items [0].GetComponent<Item> ().use (gameObject, fire_direction);
 		active_items.RemoveAt (0);
 	}
@@ -131,9 +139,33 @@ public class Player : MonoBehaviour {
 			Debug.Log (crown_step.current);
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    void update_animation()
+    {
+
+        float speed = Input.GetAxis("Horizontal");
+        anim.SetFloat("Speed", Mathf.Abs(speed));
+        if (speed < 0 && !facingLeft)
+        {
+            Flip();
+        }
+        else if (speed > 0 && facingLeft)
+        {
+            Flip();
+        }
+    }
+
+    void Flip()
+    {
+
+        facingLeft = !facingLeft;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
+    // Update is called once per frame
+    void Update () {
 		update_disable ();
 		update_movement ();
 		update_fire ();
@@ -155,7 +187,7 @@ public class Player : MonoBehaviour {
 			return;
 		}
 		GameObject obj = coll.gameObject;
-		if (obj.layer != LayerMask.NameToLayer ("Item")) {
+		if (active_items.Count > 2 || obj.layer != LayerMask.NameToLayer ("Item")) {
 			return;
 		}
 		obj.SetActive(false);

@@ -32,7 +32,6 @@ public class Grenade : MonoBehaviour
                 GameObject shrapnel = GameObject.Instantiate(bullet, (Vector2)transform.position + direction, transform.rotation);
                 shrapnel.GetComponent<InstanciableWeapon>().configure(owner);
                 shrapnel.GetComponent<Rigidbody2D>().velocity = (direction * speed);
-                Debug.Log(i);
             }
             Destroy(gameObject);
         }
